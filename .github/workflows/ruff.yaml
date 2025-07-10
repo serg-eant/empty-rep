@@ -23,7 +23,7 @@ jobs:
         run: pip install ruff
 
       - name: Run Ruff linting
-        run: ruff check src/  # Проверяет папку src/
+        run: ruff check .  # Проверяет весь проект
 
       - name: Check formatting
-        run: ruff format --check src/  # Проверяет форматирование
+        run: ruff format --check .  # Проверяет форматирование по всему проекту
