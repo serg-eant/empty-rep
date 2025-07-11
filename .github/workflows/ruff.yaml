@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Конкретная стабильная версия вместо latest
 
     steps:
       - name: Checkout code
@@ -19,11 +19,18 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install Ruff
         run: pip install ruff
 
-      - name: Run Ruff linting
-        run: ruff check .  # Проверяет весь проект
-
-      - name: Check formatting
-        run: ruff format --check .  # Проверяет форматирование по всему проекту
+      - name: Run Ruff checks
+        run: |
+          ruff check .          # Проверка стиля кода
+          ruff format --check . # Проверка форматирования
